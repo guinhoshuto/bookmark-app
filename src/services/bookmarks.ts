@@ -41,6 +41,7 @@ export default class Bookmarks{
             return title
         } catch(e) {
             console.log(e)
+            return ''
         }
     }
 
