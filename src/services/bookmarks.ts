@@ -4,17 +4,21 @@ import puppeteer from 'puppeteer'
 export default class Bookmarks{
     async createBookmark(url:string){
         const name = await this.getUrlData(url)
-        const newBookmark = await prisma.bookmark.create({
-            data: {
-                url,
-                name,
-                categoryId: 1,
-                preview: "",
-                rank: 1,
-                summary: "" 
-            }
-        })
-        return newBookmark
+        try{
+            const newBookmark = await prisma.bookmark.create({
+                data: {
+                    url,
+                    name,
+                    categoryId: 1,
+                    preview: "",
+                    rank: 1,
+                    summary: "" 
+                }
+            })
+            return newBookmark
+        } catch(e){
+            console.log(e)
+        }
     }
 
     async getBookmarks(){
@@ -23,17 +27,21 @@ export default class Bookmarks{
     }
 
     async getUrlData(url: string){
-        const browser = await puppeteer.launch({
-            headless: true,
-        }) 
-        const page = await browser.newPage()
-        await page.goto(url, {
-            waitUntil: "domcontentloaded"
-        })
-        
-        const title = await page.title()
-        console.log(title)
-        return title
+        try{
+            const browser = await puppeteer.launch({
+                headless: true,
+            }) 
+            const page = await browser.newPage()
+            await page.goto(url, {
+                waitUntil: "domcontentloaded"
+            })
+            
+            const title = await page.title()
+            console.log(title)
+            return title
+        } catch(e) {
+            console.log(e)
+        }
     }
 
     async updateBookmark(uuid: string, url: string, name: string, preview: string, rank: number, summary: string, categoryId: number){
