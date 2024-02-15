@@ -10,11 +10,19 @@ route.get('/', async (req: Request, res: Response) => {
 })
 
 route.post('/create', async (req: Request, res: Response) => {
-    const { url, name } = req.body
-    bookmarks.createBookmark(url, name)
+    const { url } = req.body
+    bookmarks.createBookmark(url)
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e))
 
+})
+
+route.put('/:uuid', async (req: Request, res: Response) => {
+    const { uuid } = req.params
+    const { url, name, preview, rank, summary, categorieId } = req.body
+    bookmarks.updateBookmark(uuid, url, name, preview, rank, summary, categorieId)
+        .then(r => res.status(200).json({"message": `Bookmark ${uuid} atualizado com sucesso`}))
+        .catch(e => res.status(500).json(e))
 })
 
 // export default route
