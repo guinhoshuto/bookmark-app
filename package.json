@@ -2,9 +2,9 @@
   "name": "bookmark-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/src/server.js",
   "scripts": {
-    "start": "node build/src/server.ts",
+    "start": "node build/src/server.js",
     "dev": "tsx watch src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch"
