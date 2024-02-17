@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express'
 import Bookmarks from '../services/bookmarks'
+import Scrapper from '../services/scrapper'
 export const route = Router()
 
 const bookmarks = new Bookmarks() 
@@ -11,7 +12,9 @@ route.get('/', async (req: Request, res: Response) => {
 
 route.post('/create', async (req: Request, res: Response) => {
     const { url } = req.body
-    bookmarks.createBookmark(url)
+    const scrapper = new Scrapper()
+    const { title } = await scrapper.getUrlData(url)
+    bookmarks.createBookmark(url, title)
         .then(r => res.status(200).json(r))
         .catch(e => res.status(500).json(e))
 
