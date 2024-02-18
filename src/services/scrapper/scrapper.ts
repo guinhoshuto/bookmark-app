@@ -1,4 +1,5 @@
-import { newPage } from "../lib/puppeteer"
+import { newPage } from "../../lib/puppeteer"
+import Dribbble from "./dribbble"
 
 interface Data {
     title: string
@@ -17,7 +18,9 @@ export default class Scrapper{
         const domain = this.getDomain(url)
         switch(domain) {
             case "dribbble.com":
-                data = {title: ''}
+                const dribbble = new Dribbble(url)
+                const  {name, preview, summary} = await dribbble.getData()
+                data = {title: name, thumbnail: preview, content: summary}
                 break;
             case "twitter.com":
                 data = {title: ''}

@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express'
 import Bookmarks from '../services/bookmarks'
-import Scrapper from '../services/scrapper'
+import Scrapper from '../services/scrapper/scrapper'
 export const route = Router()
 
 const bookmarks = new Bookmarks() 
@@ -12,11 +12,28 @@ route.get('/', async (req: Request, res: Response) => {
 
 route.post('/create', async (req: Request, res: Response) => {
     const { url } = req.body
+    //dar um jeito de ser opcional o update ou não 
+    const urlAlredyExist = await bookmarks.findByUrl(url)
+
     const scrapper = new Scrapper()
-    const { title } = await scrapper.getUrlData(url)
-    bookmarks.createBookmark(url, title)
-        .then(r => res.status(200).json(r))
-        .catch(e => res.status(500).json(e))
+    const { title, thumbnail, content } = await scrapper.getUrlData(url)
+    //quando tudo estiver certo, remover esse ternário escroto
+    if(urlAlredyExist){
+        bookmarks.updateBookmark(
+            urlAlredyExist.id, 
+            url, 
+            title, 
+            thumbnail ? thumbnail : "", 
+            1, 
+            content ? content : "", 
+            1
+        )
+
+    } else {
+        bookmarks.createBookmark(url, title)
+            .then(r => res.status(200).json(r))
+            .catch(e => res.status(500).json(e))
+    }
 
 })
 
