@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 import Bookmarks from '../services/bookmarks'
 import Scrapper from '../services/scrapper/scrapper'
+import { uploadFile } from '../services/thumbnail'
 export const route = Router()
 
 const bookmarks = new Bookmarks() 
@@ -16,7 +17,10 @@ route.post('/create', async (req: Request, res: Response) => {
     const urlAlredyExist = await bookmarks.findByUrl(url)
 
     const scrapper = new Scrapper()
-    const { title, thumbnail, content } = await scrapper.getUrlData(url)
+    let { title, thumbnail, content } = await scrapper.getUrlData(url)
+    // tratar esse ponto de !
+    thumbnail = await uploadFile(thumbnail!)
+
     //quando tudo estiver certo, remover esse ternário escroto
     if(urlAlredyExist){
         bookmarks.updateBookmark(

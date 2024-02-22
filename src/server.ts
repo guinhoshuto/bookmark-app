@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { route as bookmarkRoute }from './routes/bookmarks'
 import { route as categoryRoute } from './routes/categories'
+import { route as proxyRoute } from './routes/proxy'
 
 const PORT = 3333
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 app.use('/bookmarks', bookmarkRoute)
 app.use('/categories', categoryRoute)
+app.use('/proxy', proxyRoute)
 
 app.use(express.json())
 
