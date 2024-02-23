@@ -7,7 +7,7 @@ route.get('/p/:shortcode/media', createProxyMiddleware({
     changeOrigin: true,
     pathRewrite:  (path, req) => {
         console.log(req.params)
-       return path.replace('/proxy', '/') 
+       return path.replace('/proxy', '') 
     },
     onProxyRes: function (proxyRes, req, res) {
         proxyRes.headers['Access-Control-Allow-Origin'] = '*'
