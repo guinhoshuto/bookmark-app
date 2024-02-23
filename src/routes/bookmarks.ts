@@ -12,6 +12,7 @@ route.get('/', async (req: Request, res: Response) => {
 })
 
 route.post('/create', async (req: Request, res: Response) => {
+    console.log(' oi')
     const { url } = req.body
     //dar um jeito de ser opcional o update ou não 
     const urlAlredyExist = await bookmarks.findByUrl(url)

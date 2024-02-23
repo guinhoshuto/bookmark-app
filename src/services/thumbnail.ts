@@ -15,7 +15,7 @@ const s3 = new AWS.S3({
 
 export const uploadFile = async (url: string) => {
   // const response = await fetch(url);
-  const response = await axios(url)
+  const response = await axios(url, {proxy: false})
   // const imageBuffer  = await response.arrayBuffer()
   const imageBuffer  = await response.data.arrayBuffer()
 
