@@ -11,12 +11,13 @@ datasource db {
 }
 
 model Bookmark {
-  id      String @id @default(uuid())
-  url     String @unique
+  id      String  @id @default(uuid())
+  url     String  @unique
   name    String
   preview String
   rank    Int
   summary String
+  media   String?
 
   created_at DateTime @default(now())
   updated_at DateTime @default(now())

@@ -12,15 +12,16 @@ route.get('/', async (req: Request, res: Response) => {
 })
 
 route.post('/create', async (req: Request, res: Response) => {
-    console.log(' oi')
     const { url } = req.body
     //dar um jeito de ser opcional o update ou não 
     const urlAlredyExist = await bookmarks.findByUrl(url)
 
     const scrapper = new Scrapper()
     let { title, thumbnail, content } = await scrapper.getUrlData(url)
-    // tratar esse ponto de !
-    thumbnail = await uploadFile(thumbnail!)
+    console.log(thumbnail)
+    if(thumbnail){
+        thumbnail = await uploadFile(thumbnail)
+    }
 
     //quando tudo estiver certo, remover esse ternário escroto
     if(urlAlredyExist){

@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio'
+import { newPage } from '../../lib/puppeteer'
 
 export default class Twitter{
     url: string
@@ -7,7 +8,19 @@ export default class Twitter{
     }
 
     async getData(){
-        console.log('aqui entra o twitter')
+        const page = await newPage()
+        await page.goto(this.url, {
+            waitUntil: 'networkidle0'
+        })
+        const data = await page.evaluate(() => document.querySelector('*')?.outerHTML  )
+        const $ = cheerio.load(data!)
+        try{ 
+
+        }catch(e){
+            console.log(e)
+        }
+        
+        console.log($('article a span').text())
         // const content = $('.content-block').text()
         // const author = $('div.sticky-header__user-details>div>span>a').text()
         // const title = $('h1.shot-header__title').text()

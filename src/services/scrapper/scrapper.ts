@@ -1,5 +1,6 @@
 import { newPage } from "../../lib/puppeteer"
 import Dribbble from "./dribbble"
+import Instagram from "./instagram"
 import Twitter from "./twitter"
 
 interface Data {
@@ -25,6 +26,8 @@ export default class Scrapper{
                 break;
             case "twitter.com":
                 const twitter = new Twitter(url)
+                const y = await twitter.getData()
+
                 data = {title: ''}
                 break;
             case "x.com":
@@ -32,7 +35,9 @@ export default class Scrapper{
                 data = {title: ''}
                 break;
             case "instagram.com":
-                data = {title: ''}
+                const instagram = new Instagram(url)
+                const instagramData = await instagram.getData()
+                data = {title: instagramData.name, thumbnail: instagramData.preview, content: instagramData.summary}
                 break;
             default: 
                 data = await this.genericScrapper(url)
