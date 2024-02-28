@@ -15,14 +15,18 @@ const s3 = new AWS.S3({
 
 export const uploadFile = async (url: string) => {
   // const response = await fetch(url);
-  const response = await axios(url, {proxy: false})
+  const response = await axios(url, {
+    proxy: false,
+    responseType: 'arraybuffer'
+  })
   // const imageBuffer  = await response.arrayBuffer()
-  const imageBuffer  = await response.data.arrayBuffer()
+  const imageBuffer  = response.data
 
   const params = {
     Bucket: 'bookmarks',
     Key: `${crypto.randomBytes(16).toString('hex')}.png`, // Substitua 'file-name-in-r2' pelo nome desejado para o arquivo no bucket
-    Body: new Uint8Array(imageBuffer),
+    // Body: new Uint8Array(imageBuffer),
+    Body: response.data
   };
 
   const upload = await s3.upload(params).promise()
